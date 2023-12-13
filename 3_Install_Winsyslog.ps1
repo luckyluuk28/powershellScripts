@@ -1,5 +1,7 @@
 # Download WinSyslog-installatiekopie
-Invoke-WebRequest -Uri "https://download.adiscon.com/wnsyslog162.exe" -OutFile "C:\Temp\WinSyslogSetup.exe"
+Invoke-WebRequest -Uri "https://download.adiscon.com/wnsyslog162.exe" -OutFile ".\WinSyslogSetup.exe"
 
 # Voer de installatie uit
-Start-Process -FilePath "C:\Temp\WinSyslogSetup.exe" -ArgumentList "/S" -Wait
+Start-Process -FilePath ".\WinSyslogSetup.exe" -ArgumentList "/S" -Wait
+
+Remove-Item ".\WinSyslogSetup.exe"
