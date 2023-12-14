@@ -1,53 +1,26 @@
-configuration ConfigureAD
-{
-    param
-    (
-        [Parameter(Mandatory)]
-        [String]$DomainName,
+# Replace the parameters with your own values
+param (
+  [Parameter(Mandatory=$true)]
+  [string]$DomainName,
+  [Parameter(Mandatory=$true)]
+  [securestring]$SafeModeAdministratorPassword
+)
 
-        [Parameter(Mandatory)]
-        [SecureString]$SafeModeAdministratorPassword
-    )
+# Import the Microsoft Entra ID module
+Import-Module MicrosoftEntraID
 
-    Import-DscResource -ModuleName PSDesiredStateConfiguration
+# Connect to the Microsoft Entra tenant
+Connect-MicrosoftEntraID -TenantId $env:TenantId
 
-    Node localhost
-    {
-        WindowsFeature ADInstall
-        {
-            Ensure = "Present"
-            Name   = "AD-Domain-Services"
-        }
+# Get the managed domain details
+$managedDomain = Get-MicrosoftEntraIDManagedDomain -Name $DomainName
 
-        xWaitforADDomain DscWaitForDomain
-        {
-            DomainName                   = $DomainName
-            DomainUserCredential         = (Get-Credential -UserName $DomainName -Message "Enter credentials for a user with permission to join the domain.")
-            RetryCount                   = 20
-            RetryIntervalSec             = 30
-            PsDscRunAsCredential         = (Get-Credential -UserName $DomainName -Message "Enter credentials for a user with permission to join the domain.")
-        }
+# Join the VM to the managed domain
+$joinResult = Add-MicrosoftEntraIDComputerToManagedDomain -ManagedDomain $managedDomain -SafeModeAdministratorPassword $SafeModeAdministratorPassword
 
-        WindowsFeature ADRestart
-        {
-            Ensure = "Present"
-            Name   = "AD-Domain-Services"
-            DependsOn = "[WindowsFeature]ADInstall"
-        }
-
-        xADDomain ADCreate
-        {
-            DomainName                   = $DomainName
-            DomainAdministratorCredential = (Get-Credential -UserName "$DomainName\Administrator" -Message "Enter credentials for the domain administrator.")
-            SafemodeAdministratorPassword = $SafeModeAdministratorPassword
-            PsDscRunAsCredential         = (Get-Credential -UserName "$DomainName\Administrator" -Message "Enter credentials for the domain administrator.")
-            DependsOn = "[WindowsFeature]ADRestart"
-        }
-    }
+# Check the join result
+if ($joinResult.IsSuccess) {
+  Write-Output "Successfully joined the VM to the managed domain $DomainName"
+} else {
+  Write-Error "Failed to join the VM to the managed domain $DomainName. Error: $joinResult.Error"
 }
-
-# Voordat je dit script gebruikt, zorg ervoor dat je bekend bent met PowerShell DSC en hoe je het moet gebruiken.
-# Het script neemt parameters zoals $DomainName en $SafeModeAdministratorPassword om de domeinconfiguratie aan te passen.
-# Het script maakt gebruik van DSC-resources zoals WindowsFeature en xADDomain om respectievelijk AD-gerelateerde functies te installeren en de domeinconfiguratie uit te voeren.
-# Je moet dit script aanpassen aan je specifieke vereisten, zoals het instellen van de organisatie-eenheid (OU), DNS-instellingen, enz.
-# Zorg ervoor dat je de nodige rechten hebt om een domeincontroller te installeren en configureren.
