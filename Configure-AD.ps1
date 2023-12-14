@@ -8,7 +8,7 @@ param (
     [Parameter(Mandatory=$true)]
     [string]$DomainMode,
     [Parameter(Mandatory=$true)]
-    [securestring]$SafeModeAdministratorPassword
+    [string]$SafeModeAdministratorPassword
 )
 
 # Import the Server Manager module
