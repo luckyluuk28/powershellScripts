@@ -1,26 +1,24 @@
+# Download and save this script as AD-aanmaken.ps1 in a folder of your choice
 # Replace the parameters with your own values
 param (
-  [Parameter(Mandatory=$true)]
-  [string]$DomainName,
-  [Parameter(Mandatory=$true)]
-  [securestring]$SafeModeAdministratorPassword
+    [Parameter(Mandatory=$true)]
+    [string]$DomainName,
+    [Parameter(Mandatory=$true)]
+    [string]$NetbiosName,
+    [Parameter(Mandatory=$true)]
+    [string]$DomainMode,
+    [Parameter(Mandatory=$true)]
+    [securestring]$SafeModeAdministratorPassword
 )
 
-# Import the Microsoft Entra ID module
-Import-Module MicrosoftEntraID
+# Import the Server Manager module
+Import-Module ServerManager
 
-# Connect to the Microsoft Entra tenant
-Connect-MicrosoftEntraID -TenantId $env:TenantId
+# Install the AD DS role
+Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
 
-# Get the managed domain details
-$managedDomain = Get-MicrosoftEntraIDManagedDomain -Name $DomainName
+# Import the Active Directory module
+Import-Module ActiveDirectory
 
-# Join the VM to the managed domain
-$joinResult = Add-MicrosoftEntraIDComputerToManagedDomain -ManagedDomain $managedDomain -SafeModeAdministratorPassword $SafeModeAdministratorPassword
-
-# Check the join result
-if ($joinResult.IsSuccess) {
-  Write-Output "Successfully joined the VM to the managed domain $DomainName"
-} else {
-  Write-Error "Failed to join the VM to the managed domain $DomainName. Error: $joinResult.Error"
-}
+# Create a new domain
+New-ADDomain -Name $DomainName -NetbiosName $NetbiosName -DomainMode $DomainMode -SafeModeAdministratorPassword $SafeModeAdministratorPassword
