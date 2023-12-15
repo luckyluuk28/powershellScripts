@@ -1,5 +1,3 @@
-$forceInstall = $true
-
 # Replace the parameters with your own values
 param (
   [Parameter(Mandatory=$true)]
@@ -7,6 +5,9 @@ param (
   [Parameter(Mandatory=$true)]
   [string]$AdministratorPassword
 )
+
+$forceInstall = $true
+
 #installeren van microsoft entraID en andere benodigte packages
 Install-Module MicrosoftEntraID
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -ForceInstall $forceInstall
