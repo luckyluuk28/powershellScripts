@@ -1,3 +1,9 @@
+https://packages.diladele.com/squid/4.14/squid.msi
+
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+
+
 # Define variables
 $downloadUrl = "http://www.squid-cache.org/Versions/v6/squid-6.6.tar.gz"
 $downloadPath = "C:\Squid"
