@@ -5,8 +5,9 @@ param (
   [Parameter(Mandatory=$true)]
   [string]$AdministratorPassword
 )
-#installeren van microsoft entraID
+#installeren van microsoft entraID en andere benodigte packages
 Install-Module MicrosoftEntraID
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
 # Import the Microsoft Entra ID module
 Import-Module MicrosoftEntraID
