@@ -8,7 +8,7 @@ param (
 
 Install-PackageProvider -Name NuGet -Force
 #installeren van microsoft entraID en andere benodigte packages
-Install-Module MicrosoftEntraID -Force
+Install-Module MicrosoftEntraID -Force -Confirm:$false
 
 
 # Import the Microsoft Entra ID module
