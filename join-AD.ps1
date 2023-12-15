@@ -5,6 +5,8 @@ param (
   [Parameter(Mandatory=$true)]
   [string]$AdministratorPassword
 )
+#installeren van microsoft entraID
+Install-Module MicrosoftEntraID
 
 # Import the Microsoft Entra ID module
 Import-Module MicrosoftEntraID
