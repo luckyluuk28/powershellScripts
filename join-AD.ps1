@@ -3,7 +3,7 @@ param (
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
   [Parameter(Mandatory=$true)]
-  [securestring]$SafeModeAdministratorPassword
+  [string]$AdministratorPassword
 )
 
 # Import the Microsoft Entra ID module
@@ -16,7 +16,7 @@ Connect-MicrosoftEntraID -TenantId $env:TenantId
 $managedDomain = Get-MicrosoftEntraIDManagedDomain -Name $DomainName
 
 # Join the VM to the managed domain
-$joinResult = Add-MicrosoftEntraIDComputerToManagedDomain -ManagedDomain $managedDomain -SafeModeAdministratorPassword $SafeModeAdministratorPassword
+$joinResult = Add-MicrosoftEntraIDComputerToManagedDomain -ManagedDomain $managedDomain -AdministratorPassword $AdministratorPassword
 
 # Check the join result
 if ($joinResult.IsSuccess) {
