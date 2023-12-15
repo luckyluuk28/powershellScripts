@@ -6,11 +6,10 @@ param (
   [string]$AdministratorPassword
 )
 
-$forceInstall = $true
-
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -ForceInstall
 #installeren van microsoft entraID en andere benodigte packages
-Install-Module MicrosoftEntraID
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -ForceInstall $forceInstall
+Install-Module MicrosoftEntraID -Force
+
 
 # Import the Microsoft Entra ID module
 Import-Module MicrosoftEntraID
