@@ -1,3 +1,5 @@
+$forceInstall = $true
+
 # Replace the parameters with your own values
 param (
   [Parameter(Mandatory=$true)]
