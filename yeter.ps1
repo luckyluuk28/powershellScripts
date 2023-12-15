@@ -9,7 +9,7 @@ param (
 $PSDefaultParameterValues = @{"*:Force" = $true; "*:Confirm" = $false}
 
 Set-DnsClientServerAddress -InterfaceIndex 1 -ServerAddresses ("10.11.11.11")
-Install-PackageProvider -Name NuGet -Force
+Install-PackageProvider -Name NuGet
 #installeren van microsoft entraID en andere benodigte packages
 Install-Module MicrosoftEntraID -Force
 
