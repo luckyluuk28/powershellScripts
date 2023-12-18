@@ -7,7 +7,7 @@ param (
 )
 
 $Cred = New-Object System.Management.Automation.PSCredential ("adminuser", (ConvertTo-SecureString $AdministratorPassword -AsPlainText -Force))
-Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
+$interfaces = Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
 Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAddresses ("10.11.11.11","168.63.129.16")
 Add-Computer -DomainName $DomainName -Credential $Cred -Restart
 
