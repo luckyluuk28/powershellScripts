@@ -6,24 +6,10 @@ param (
   [string]$AdministratorPassword
 )
 
-Set-DnsClientServerAddress -InterfaceIndex 1 -ServerAddresses ("10.11.11.11","168.63.129.16")
-
-Install-PackageProvider -Name NuGet -Force
-#installeren van microsoft entraID en andere benodigte packages
-Install-Module MicrosoftEntraID -Force -Confirm:$false
-
-
-# Import the Microsoft Entra ID module
-Import-Module MicrosoftEntraID
-
-# Connect to the Microsoft Entra tenant
-Connect-MicrosoftEntraID -TenantId $env:TenantId
-
-# Get the managed domain details
-$managedDomain = Get-MicrosoftEntraIDManagedDomain -Name $DomainName
-
-# Join the VM to the managed domain
-$joinResult = Add-MicrosoftEntraIDComputerToManagedDomain -ManagedDomain $managedDomain -AdministratorPassword $AdministratorPassword
+$Cred = New-Object System.Management.Automation.PSCredential ("adminuser", (ConvertTo-SecureString $AdministratorPassword -AsPlainText -Force))
+Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
+Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAddresses ("10.11.11.11","168.63.129.16")
+Add-Computer -DomainName $DomainName -Credential $Cred -Restart
 
 # Check the join result
 if ($joinResult.IsSuccess) {
