@@ -1,10 +1,10 @@
 param (
-  [Parameter(Mandatory=$true)]
-  [string]$IpAddress
+  [Parameter(Mandatory=$false)]
+  [string]$IpAddress,
+  [Parameter(Mandatory=$false)]
+  [string]$Username,
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
-  [Parameter(Mandatory=$true)]
-  [string]$Username
   [Parameter(Mandatory=$true)]
   [string]$Password
 )
