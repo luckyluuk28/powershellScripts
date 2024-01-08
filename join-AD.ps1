@@ -1,11 +1,11 @@
 # Replace the parameters with your own values
 param (
-  [Parameter(Mandatory=$true)]
-  [string]$IpAddress
+  [Parameter(Mandatory=$false)]
+  [string]$IpAddress = '10.11.11.11',
+  [Parameter(Mandatory=$false)]
+  [string]$Username = 'adminuser',
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
-  [Parameter(Mandatory=$true)]
-  [string]$Username
   [Parameter(Mandatory=$true)]
   [string]$Password
 )
