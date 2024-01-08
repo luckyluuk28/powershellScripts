@@ -1,6 +1,6 @@
 # Replace the parameters with your own values
 param (
-  [Parameter(Mandatory=$ture)]
+  [Parameter(Mandatory=$true)]
   [string]$IpAddress
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
