@@ -1,15 +1,21 @@
 # Replace the parameters with your own values
 param (
+  [Parameter(Mandatory=$ture)]
+  [string]$IpAddress
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
   [Parameter(Mandatory=$true)]
-  [string]$AdministratorPassword
+  [string]$Username
+  [Parameter(Mandatory=$true)]
+  [string]$Password
 )
 
 $interfaces = Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
-Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAddresses ("10.11.11.11","168.63.129.16")
+Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAddresses ($IpAddress,"168.63.129.16")
 
-$Cred = New-Object System.Management.Automation.PSCredential ("adminuser", (ConvertTo-SecureString $AdministratorPassword -AsPlainText -Force))
+$DomainUser = $Username + '@' + $DomainName
+
+$Cred = New-Object System.Management.Automation.PSCredential ($DomainUser, (ConvertTo-SecureString $Password -AsPlainText -Force))
 Add-Computer -DomainName $DomainName -Credential $Cred
 
 Restart-Computer -Force -Wait
