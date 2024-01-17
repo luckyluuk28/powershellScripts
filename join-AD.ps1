@@ -1,7 +1,7 @@
 # Replace the parameters with your own values
 param (
   [Parameter(Mandatory=$false)]
-  [string]$IpAddress = '10.11.11.11',
+  [string]$IpAddress = '10.11.11.111',
   [Parameter(Mandatory=$false)]
   [string]$Username = 'adminuser',
   [Parameter(Mandatory=$true)]
@@ -19,10 +19,3 @@ $Cred = New-Object System.Management.Automation.PSCredential ($DomainUser, (Conv
 Add-Computer -DomainName $DomainName -Credential $Cred
 
 Restart-Computer -Force -Wait
-
-# Check the join result
-if ($joinResult.IsSuccess) {
-  Write-Output "Successfully joined the VM to the managed domain $DomainName"
-} else {
-  Write-Error "Failed to join the VM to the managed domain $DomainName. Error: $joinResult.Error"
-}
