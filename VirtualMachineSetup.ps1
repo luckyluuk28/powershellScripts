@@ -25,7 +25,7 @@ Invoke-WebRequest $dlurl -OutFile $installerPath
 Start-Process -FilePath $installerPath -Args "/S" -Verb RunAs -Wait
 Remove-Item $installerPath
 
-# powershell -ExecutionPolicy bypass -File office-proplus-deployment.ps1 -OfficeVersion Office2016
+powershell -ExecutionPolicy bypass -File office-proplus-deployment.ps1 -OfficeVersion Office2016
 
 $interfaces = Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
 Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAddresses ($IpAddress,"168.63.129.16")
