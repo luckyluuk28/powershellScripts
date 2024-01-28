@@ -6,8 +6,8 @@ param (
   [string]$Username,
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
-  [Parameter(Mandatory=$false)]
-  [string]$Password=$extensionContext.GetProtectedSetting('adminPassword')
+  [Parameter(Mandatory=$true)]
+  [string]$Password
 )
 
 $interfaces = Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
