@@ -1,12 +1,12 @@
 param (
-  [Parameter(Mandatory=$false)]
+  [Parameter(Mandatory=$true)]
   [string]$IpAddress,
-  [Parameter(Mandatory=$false)]
+  [Parameter(Mandatory=$true)]
   [string]$Username,
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
-  [Parameter(Mandatory=$true)]
-  [securestring]$Password
+  [Parameter(Mandatory=$false)]
+  [securestring]$Password=$extensionContext.GetProtectedSetting('adminPassword')
 )
 
 powershell -ExecutionPolicy bypass -File office-proplus-deployment.ps1 -OfficeVersion Office2016
