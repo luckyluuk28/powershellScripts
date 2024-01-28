@@ -6,7 +6,7 @@ param (
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
   [Parameter(Mandatory=$false)]
-  [securestring]$Password
+  [string]$Password
 )
 
 Set-TimeZone -Id "W. Europe Standard Time"  
