@@ -37,6 +37,6 @@ Enable-NetAdapter -InterfaceAlias $InterfaceAlias
 $DomainUser = $Username + '@' + $DomainName
 
 $Cred = New-Object System.Management.Automation.PSCredential ($DomainUser, (ConvertTo-SecureString $Password -AsPlainText -Force))
-Add-Computer -DomainName $DomainName -Credential $Cred
+Add-Computer -DomainName $IPAddress -Credential $Cred -Force
 
 Restart-Computer -Force -Wait
