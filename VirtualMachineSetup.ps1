@@ -29,6 +29,7 @@ powershell -ExecutionPolicy bypass -File office-proplus-deployment.ps1 -OfficeVe
 
 $interfaces = Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
 Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAddresses ($IpAddress,"168.63.129.16")
+Clear-DnsClientCache
 
 $DomainUser = $Username + '@' + $DomainName
 
