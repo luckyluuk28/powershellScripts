@@ -1,13 +1,13 @@
 # Replace the parameters with your own values
 param (
-  [Parameter(Mandatory=$false)]
-  [string]$IpAddress = '10.11.11.111',
-  [Parameter(Mandatory=$false)]
-  [string]$Username = 'adminuser',
+  [Parameter(Mandatory=$true)]
+  [string]$IpAddress,
+  [Parameter(Mandatory=$true)]
+  [string]$Username,
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
-  [Parameter(Mandatory=$true)]
-  [string]$Password
+  [Parameter(Mandatory=$false)]
+  [string]$Password=$extensionContext.GetProtectedSetting('adminPassword')
 )
 
 $interfaces = Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
