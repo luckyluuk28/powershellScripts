@@ -31,6 +31,9 @@ $interfaces = Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_
 Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAddresses ($IpAddress,"168.63.129.16")
 Clear-DnsClientCache
 
+Disable-NetAdapter -InterfaceAlias $InterfaceAlias -Confirm:$false
+Enable-NetAdapter -InterfaceAlias $InterfaceAlias
+
 $DomainUser = $Username + '@' + $DomainName
 
 $Cred = New-Object System.Management.Automation.PSCredential ($DomainUser, (ConvertTo-SecureString $Password -AsPlainText -Force))
