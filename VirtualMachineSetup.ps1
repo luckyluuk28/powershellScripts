@@ -6,8 +6,18 @@ param (
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
   [Parameter(Mandatory=$false)]
-  [securestring]$Password=$extensionContext.GetProtectedSetting('adminPassword')
+  [securestring]$Password
 )
+
+if (-not $Password) {
+    try {
+        $Password = $env:ExtensionContext.GetProtectedSetting('adminPassword')
+    } catch {
+        Write-Error "Failed to retrieve adminPassword from protectedSettings."
+        # Handle the error or provide a default password here if needed
+        return
+    }
+}
 
 powershell -ExecutionPolicy bypass -File office-proplus-deployment.ps1 -OfficeVersion Office2016
 powershell -ExecutionPolicy bypass -File 7ZipSetup.ps1
