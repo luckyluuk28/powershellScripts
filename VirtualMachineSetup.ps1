@@ -32,7 +32,7 @@ Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAdd
 
 $DomainUser = $Username + '@' + $DomainName
 
-$Cred = New-Object System.Management.Automation.PSCredential ($DomainUser, $Password)
+$Cred = New-Object System.Management.Automation.PSCredential ($DomainUser, (ConvertTo-SecureString $Password -AsPlainText -Force))
 Add-Computer -DomainName $DomainName -Credential $Cred
 
 Restart-Computer -Force -Wait
