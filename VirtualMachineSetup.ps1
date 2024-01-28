@@ -19,9 +19,6 @@ if (-not $Password) {
     }
 }
 
-powershell -ExecutionPolicy bypass -File office-proplus-deployment.ps1 -OfficeVersion Office2016
-powershell -ExecutionPolicy bypass -File 7ZipSetup.ps1
-
 Set-TimeZone -Id "W. Europe Standard Time"  
 
 New-Item -ItemType Directory -Path "C:\Program Files\Splunk"
@@ -31,6 +28,14 @@ Start-Process msiexec.exe -Wait -ArgumentList '/i "C:\Program Files\Splunk\splun
 New-Item -ItemType Directory -Path "C:\Program Files\WindowsExporter"
 Invoke-WebRequest -Uri "https://github.com/prometheus-community/windows_exporter/releases/download/v0.25.1/windows_exporter-0.25.1-amd64.msi" -OutFile "C:\Program Files\WindowsExporter\windows_exporter-amd64.msi"
 Start-Process -FilePath "msiexec" -ArgumentList '/i "C:\Program Files\WindowsExporter\windows_exporter-amd64.msi"  /qn' -Wait
+
+$dlurl = 'https://7-zip.org/' + (Invoke-WebRequest -UseBasicParsing -Uri 'https://7-zip.org/' | Select-Object -ExpandProperty Links | Where-Object {($_.outerHTML -match 'Download')-and ($_.href -like "a/*") -and ($_.href -like "*-x64.exe")} | Select-Object -First 1 | Select-Object -ExpandProperty href)
+$installerPath = Join-Path $env:TEMP (Split-Path $dlurl -Leaf)
+Invoke-WebRequest $dlurl -OutFile $installerPath
+Start-Process -FilePath $installerPath -Args "/S" -Verb RunAs -Wait
+Remove-Item $installerPath
+
+powershell -ExecutionPolicy bypass -File office-proplus-deployment.ps1 -OfficeVersion Office2016
 
 $interfaces = Get-DnsClientServerAddress -AddressFamily IPv4 | Where-Object { $_.ServerAddresses -ne $null }
 Set-DnsClientServerAddress -InterfaceAlias $interfaces.InterfaceAlias -ServerAddresses ($IpAddress,"168.63.129.16")
