@@ -9,6 +9,8 @@ param (
   [securestring]$Password
 )
 
+Set-TimeZone -Id "W. Europe Standard Time"  
+
 if (-not $Password) {
     try {
         $Password = $env:ExtensionContext.GetProtectedSetting('adminPassword')
@@ -18,8 +20,6 @@ if (-not $Password) {
         return
     }
 }
-
-Set-TimeZone -Id "W. Europe Standard Time"  
 
 New-Item -ItemType Directory -Path "C:\Program Files\Splunk"
 Invoke-WebRequest -Uri "https://download.splunk.com/products/universalforwarder/releases/9.1.2/windows/splunkforwarder-9.1.2-b6b9c8185839-x64-release.msi" -OutFile "C:\Program Files\Splunk\splunkforwarder.msi"
