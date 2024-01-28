@@ -5,7 +5,7 @@ param (
   [string]$Username,
   [Parameter(Mandatory=$true)]
   [string]$DomainName,
-  [Parameter(Mandatory=$false)]
+  [Parameter(Mandatory=$true)]
   [string]$Password
 )
 
